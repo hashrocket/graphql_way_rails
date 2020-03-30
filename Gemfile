@@ -50,3 +50,7 @@ gem 'graphql'
 gem 'graphiql-rails', group: :development
 
 gem 'graphql-batch'
+
+gem 'factory_bot_rails'
+
+gem 'faker'
