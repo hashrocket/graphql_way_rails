@@ -6,6 +6,10 @@ class Types::ProductType < Types::BaseObject
   field :category, Types::CategoryType, null: false
   field :orders, [Types::OrderType], null: false
 
+  def category
+    Loaders::BelongsToLoader.for(Category).load(object.category_id)
+  end
+
   def price_cents
     (100 * object.price).to_i
   end

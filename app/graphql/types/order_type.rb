@@ -4,6 +4,10 @@ class Types::OrderType < Types::BaseObject
   field :user, Types::UserType, null: false
   field :products, [Types::ProductType], null: false
 
+  def user
+    Loaders::BelongsToLoader.for(User).load(object.user_id)
+  end
+
   def ordered_on
     object.ordered_at.strftime("%Y-%m-%d")
   end
