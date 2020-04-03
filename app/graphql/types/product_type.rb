@@ -10,6 +10,12 @@ class Types::ProductType < Types::BaseObject
     Loaders::BelongsToLoader.for(Category).load(object.category_id)
   end
 
+  def orders
+    Loaders::HasManyThroughLoader
+      .for(Order, :product_id, through: :order_items)
+      .load(object.id)
+  end
+
   def price_cents
     (100 * object.price).to_i
   end

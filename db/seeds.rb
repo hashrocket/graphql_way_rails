@@ -16,8 +16,11 @@ product_ids = Product.ids
   (0..rand(10)).each do
     order = create(:order, user: user)
 
-    (0..rand(10)).each do
-      OrderItem.create(product_id: product_ids.sample, order: order)
-    end
+    (0..rand(10))
+      .map { product_ids.sample }
+      .uniq
+      .each do |product_id|
+        OrderItem.create(product_id: product_id, order: order)
+      end
   end
 end

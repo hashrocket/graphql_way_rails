@@ -8,6 +8,12 @@ class Types::OrderType < Types::BaseObject
     Loaders::BelongsToLoader.for(User).load(object.user_id)
   end
 
+  def products
+    Loaders::HasManyThroughLoader
+      .for(Product, :order_id, through: :order_items)
+      .load(object.id)
+  end
+
   def ordered_on
     object.ordered_at.strftime("%Y-%m-%d")
   end
