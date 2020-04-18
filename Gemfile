@@ -54,3 +54,5 @@ gem 'graphql-batch'
 gem 'factory_bot_rails'
 
 gem 'faker'
+
+gem 'activerecord-import'

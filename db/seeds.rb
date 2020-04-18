@@ -1,26 +1,46 @@
 include FactoryBot::Syntax::Methods
 
-(1..10).each do
-  category = create(:category)
+puts "=> Creating Categories"
+categories = (1..25).map do
+  build(:category)
+end
+Category.import(categories)
+category_ids = Category.ids
 
-  (0..rand(10)).each do
-    create(:product, category: category)
+puts "=> Creating Products"
+products = category_ids.flat_map do |category_id|
+  (0..rand(50)).map do
+    build(:product, category_id: category_id)
   end
 end
-
+Product.import(products)
 product_ids = Product.ids
 
-(1..50).each do
-  user = create(:user)
+puts "=> Creating Users"
+users = (1..100).map do
+  build(:user)
+end
+User.import(users)
+user_ids = User.ids
 
-  (0..rand(10)).each do
-    order = create(:order, user: user)
-
-    (0..rand(10))
-      .map { product_ids.sample }
-      .uniq
-      .each do |product_id|
-        OrderItem.create(product_id: product_id, order: order)
-      end
+puts "=> Creating Orders"
+orders = user_ids.flat_map do |user_id|
+  (0..rand(50)).map do
+    build(:order, user_id: user_id)
   end
 end
+Order.import(orders)
+order_ids = Order.ids
+
+puts "=> Creating OrderItems"
+order_items = order_ids.flat_map do |order_id|
+  (0..rand(10))
+    .map { product_ids.sample }
+    .uniq
+    .map do |product_id|
+      OrderItem.new(order_id: order_id, product_id: product_id)
+    end
+end
+OrderItem.import(order_items)
+
+puts "=> Seeding has finished successfully!"
