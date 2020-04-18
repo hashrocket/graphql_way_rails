@@ -9,9 +9,10 @@ class Types::OrderType < Types::BaseObject
   end
 
   def products
-    Loaders::HasManyThroughLoader
-      .for(Product, :order_id, through: :order_items)
-      .load(object.id)
+    order_items.then do |order_item_list|
+      product_ids = order_item_list.map(&:product_id)
+      Loaders::BelongsToLoader.for(Product).load_many(product_ids)
+    end
   end
 
   def ordered_on
@@ -20,5 +21,11 @@ class Types::OrderType < Types::BaseObject
 
   def ordered_at
     object.ordered_at.strftime("%H:%M")
+  end
+
+  private
+
+  def order_items
+    Loaders::HasManyLoader.for(OrderItem, :order_id).load(object.id)
   end
 end

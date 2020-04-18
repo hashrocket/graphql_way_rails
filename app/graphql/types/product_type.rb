@@ -11,12 +11,19 @@ class Types::ProductType < Types::BaseObject
   end
 
   def orders
-    Loaders::HasManyThroughLoader
-      .for(Order, :product_id, through: :order_items)
-      .load(object.id)
+    order_items.then do |order_item_list|
+      order_ids = order_item_list.map(&:order_id)
+      Loaders::BelongsToLoader.for(Order).load_many(order_ids)
+    end
   end
 
   def price_cents
     (100 * object.price).to_i
+  end
+
+  private
+
+  def order_items
+    Loaders::HasManyLoader.for(OrderItem, :product_id).load(object.id)
   end
 end
