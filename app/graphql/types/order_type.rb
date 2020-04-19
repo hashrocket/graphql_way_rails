@@ -1,6 +1,5 @@
 class Types::OrderType < Types::BaseObject
-  field :ordered_on, String, null: false
-  field :ordered_at, String, null: false
+  field :ordered_at, GraphQL::Types::ISO8601DateTime, null: false
   field :user, Types::UserType, null: false
   field :products, [Types::ProductType], null: false
 
@@ -13,14 +12,6 @@ class Types::OrderType < Types::BaseObject
       product_ids = order_item_list.map(&:product_id)
       Loaders::BelongsToLoader.for(Product).load_many(product_ids)
     end
-  end
-
-  def ordered_on
-    object.ordered_at.strftime("%Y-%m-%d")
-  end
-
-  def ordered_at
-    object.ordered_at.strftime("%H:%M")
   end
 
   private
