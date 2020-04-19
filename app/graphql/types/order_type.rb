@@ -8,9 +8,7 @@ class Types::OrderType < Types::BaseObject
   end
 
   def products(sort: nil, limit: nil)
-    sort = sort.map{ |k, v| ["products.#{k}", v] }.to_h
-
-    order_items(joins: :product, sort: sort, limit: limit).then do |order_item_list|
+    order_items(joins: sort && :product, sort: sort, limit: limit).then do |order_item_list|
       product_ids = order_item_list.map(&:product_id)
       Loaders::BelongsToLoader.for(Product).load_many(product_ids)
     end
