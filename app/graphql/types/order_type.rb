@@ -3,16 +3,17 @@ class Types::OrderType < Types::BaseObject
   field :user, Types::UserType, null: false
   field :products, [Types::ProductType], null: false do
     sort_argument :name, :color, :size, :price
+    limit_argument
   end
 
   def user
     Loaders::BelongsToLoader.for(User).load(object.user_id)
   end
 
-  def products(sort: nil)
+  def products(sort: nil, limit: nil)
     sort = sort.map{ |k, v| ["products.#{k}", v] }.to_h
 
-    order_items(joins: :product, sort: sort).then do |order_item_list|
+    order_items(joins: :product, sort: sort, limit: limit).then do |order_item_list|
       product_ids = order_item_list.map(&:product_id)
       Loaders::BelongsToLoader.for(Product).load_many(product_ids)
     end
