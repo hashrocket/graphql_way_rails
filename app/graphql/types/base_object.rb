@@ -4,28 +4,39 @@ module Types
 
     def self.categories_field
       field :categories, [Types::CategoryType], null: false do
-        sort_argument :name
+        sort_argument :categories, {
+          name: :name,
+        }
         limit_argument
       end
     end
 
     def self.products_field
       field :products, [Types::ProductType], null: false do
-        sort_argument :name, :color, :size, :price
+        sort_argument :products, {
+          name: :name,
+          color: :color,
+          size: :size,
+          price: :price,
+        }
         limit_argument
       end
     end
 
     def self.users_field
       field :users, [Types::UserType], null: false do
-        sort_argument :email
+        sort_argument :users, {
+          email: :email,
+        }
         limit_argument
       end
     end
 
     def self.orders_field
       field :orders, [Types::OrderType], null: false do
-        sort_argument :ordered_at
+        sort_argument :orders, {
+          orderedAt: :ordered_at,
+        }
         limit_argument
       end
     end
