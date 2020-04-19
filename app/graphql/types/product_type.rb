@@ -4,10 +4,7 @@ class Types::ProductType < Types::BaseObject
   field :size, String, null: true
   field :price_cents, Integer, null: false
   field :category, Types::CategoryType, null: false
-  field :orders, [Types::OrderType], null: false do
-    sort_argument :ordered_at
-    limit_argument
-  end
+  orders_field
 
   def category
     Loaders::BelongsToLoader.for(Category).load(object.category_id)

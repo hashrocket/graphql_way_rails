@@ -1,9 +1,6 @@
 class Types::UserType < Types::BaseObject
   field :email, String, null: false
-  field :orders, [Types::OrderType], null: false do
-    sort_argument :ordered_at
-    limit_argument
-  end
+  orders_field
 
   def orders(sort: nil, limit: nil)
     Loaders::HasManyLoader
