@@ -1,10 +1,7 @@
 class Types::OrderType < Types::BaseObject
   field :ordered_at, GraphQL::Types::ISO8601DateTime, null: false
   field :user, Types::UserType, null: false
-  field :products, [Types::ProductType], null: false do
-    sort_argument :name, :color, :size, :price
-    limit_argument
-  end
+  products_field
 
   def user
     Loaders::BelongsToLoader.for(User).load(object.user_id)

@@ -1,23 +1,8 @@
 class Types::QueryType < Types::BaseObject
-  field :categories, [Types::CategoryType], null: false do
-    sort_argument :name
-    limit_argument
-  end
-
-  field :products, [Types::ProductType], null: false do
-    sort_argument :name, :color, :size, :price
-    limit_argument
-  end
-
-  field :users, [Types::UserType], null: false do
-    sort_argument :email
-    limit_argument
-  end
-
-  field :orders, [Types::OrderType], null: false do
-    sort_argument :ordered_at
-    limit_argument
-  end
+  categories_field
+  products_field
+  users_field
+  orders_field
 
   def categories(sort: nil, limit: nil)
     query = Category
