@@ -18,5 +18,28 @@ module Types
         }
       )
     end
+
+    def sort_argument(*fields)
+      fields = fields.map(&:to_s).map{|field| field.camelize(:lower) }
+
+      argument(
+        :sort,
+        [String],
+        required: false,
+        default_value: [],
+        prepare: ->(values, _ctx) {
+          (values || []).map do |value|
+            dir = value[0] == "-" ? :desc : :asc
+            value = value[1..-1] if ["+", "-"].include?(value[0])
+            if fields.include?(value)
+              [value.underscore, dir]
+            else
+              message = "'sort' must be included in #{fields}"
+              raise GraphQL::ExecutionError, message
+            end
+          end.to_h
+        },
+      )
+    end
   end
 end
