@@ -6,16 +6,17 @@ class Types::ProductType < Types::BaseObject
   field :category, Types::CategoryType, null: false
   field :orders, [Types::OrderType], null: false do
     sort_argument :ordered_at
+    limit_argument
   end
 
   def category
     Loaders::BelongsToLoader.for(Category).load(object.category_id)
   end
 
-  def orders(sort: nil)
+  def orders(sort: nil, limit: nil)
     sort = sort.map{ |k, v| ["orders.#{k}", v] }.to_h
 
-    order_items(joins: :order, sort: sort).then do |order_item_list|
+    order_items(joins: :order, sort: sort, limit: limit).then do |order_item_list|
       order_ids = order_item_list.map(&:order_id)
       Loaders::BelongsToLoader.for(Order).load_many(order_ids)
     end
