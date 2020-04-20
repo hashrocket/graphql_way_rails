@@ -4,8 +4,8 @@ class Types::QueryType < Types::BaseObject
   users_field
   orders_field
 
-  def categories(sort: nil, limit: nil)
-    Category.graphql_query(sort: sort, limit: limit)
+  def categories(name: nil, sort: nil, limit: nil)
+    Category.graphql_query(name: name, sort: sort, limit: limit)
   end
 
   def products(sort: nil, limit: nil)
