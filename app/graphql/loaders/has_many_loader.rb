@@ -1,28 +1,22 @@
 class Loaders::HasManyLoader < GraphQL::Batch::Loader
-  def initialize(model, column, joins: nil, sort: nil, limit: nil)
+  def initialize(model, column, query_options)
     @model = model
     @column = column
-    @joins = joins
-    @sort = sort
-    @limit = limit
+    @query_options = query_options
   end
 
   def perform(relation_ids)
-    query = @model
-    query = query.joins(@joins) if @joins
-    query = query.order(@sort) if @sort
+    query = @model.graphql_query(**@query_options)
 
-    if @limit
-      sub_query = query
-                    .where("#{@model.table_name}.#{@column} = tmp_relation_ids")
-                    .limit(@limit)
+    if query.limit_value
+      sub_query = query.where("#{@model.table_name}.#{@column} = tmp_relation_ids")
 
       query = @model
         .select("tmp_lat_join_tab.*")
-        .from("UNNEST(ARRAY[#{relation_ids.uniq.join(",")}]) tmp_relation_ids")
+        .from("UNNEST(ARRAY[#{relation_ids.join(",")}]) tmp_relation_ids")
         .joins("JOIN LATERAL (#{sub_query.to_sql}) tmp_lat_join_tab ON TRUE")
     else
-      query = query.where({ @column => relation_ids.uniq })
+      query = query.where({ @column => relation_ids })
     end
 
     records_by_relation_id = query.group_by do |result|

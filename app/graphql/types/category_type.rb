@@ -3,8 +3,13 @@ class Types::CategoryType < Types::BaseObject
   products_field
 
   def products(sort: nil, limit: nil)
+    query_options = {
+      sort: sort,
+      limit: limit,
+    }
+
     Loaders::HasManyLoader
-      .for(Product, :category_id, sort: sort, limit: limit)
+      .for(Product, :category_id, query_options)
       .load(object.id)
   end
 end

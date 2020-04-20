@@ -7,23 +7,30 @@ class Types::ProductType < Types::BaseObject
   orders_field
 
   def category
-    Loaders::BelongsToLoader.for(Category).load(object.category_id)
+    Loaders::BelongsToLoader
+      .for(Category)
+      .load(object.category_id)
   end
 
   def orders(sort: nil, limit: nil)
-    order_items(joins: sort && :order, sort: sort, limit: limit).then do |order_item_list|
-      order_ids = order_item_list.map(&:order_id)
-      Loaders::BelongsToLoader.for(Order).load_many(order_ids)
-    end
+    query_options = {
+      joins: sort && :order,
+      sort: sort,
+      limit: limit,
+    }
+
+    Loaders::HasManyLoader
+      .for(OrderItem, :product_id, query_options)
+      .load(object.id)
+      .then do |order_items|
+        order_ids = order_items.map(&:order_id)
+        Loaders::BelongsToLoader
+          .for(Order)
+          .load_many(order_ids)
+      end
   end
 
   def price_cents
     (100 * object.price).to_i
-  end
-
-  private
-
-  def order_items(*options)
-    Loaders::HasManyLoader.for(OrderItem, :product_id, *options).load(object.id)
   end
 end
