@@ -4,6 +4,7 @@ module Types
 
     def self.categories_field
       field :categories, [Types::CategoryType], null: false do
+        argument :name, String, required: false
         sort_argument :categories, {
           name: :name,
         }
