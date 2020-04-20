@@ -26,6 +26,7 @@ module Types
 
     def self.users_field
       field :users, [Types::UserType], null: false do
+        argument :email, String, required: false
         sort_argument :users, {
           email: :email,
         }

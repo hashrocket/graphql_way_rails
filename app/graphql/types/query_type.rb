@@ -12,8 +12,8 @@ class Types::QueryType < Types::BaseObject
     Product.graphql_query(sort: sort, limit: limit)
   end
 
-  def users(sort: nil, limit: nil)
-    User.graphql_query(sort: sort, limit: limit)
+  def users(email: nil, sort: nil, limit: nil)
+    User.graphql_query(email: email, sort: sort, limit: limit)
   end
 
   def orders(sort: nil, limit: nil)
