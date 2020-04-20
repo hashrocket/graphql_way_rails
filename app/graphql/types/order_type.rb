@@ -4,19 +4,27 @@ class Types::OrderType < Types::BaseObject
   products_field
 
   def user
-    Loaders::BelongsToLoader.for(User).load(object.user_id)
+    Loaders::BelongsToLoader
+      .for(User)
+      .load(object.user_id)
   end
 
   def products(sort: nil, limit: nil)
-    order_items(joins: sort && :product, sort: sort, limit: limit).then do |order_item_list|
-      product_ids = order_item_list.map(&:product_id)
-      Loaders::BelongsToLoader.for(Product).load_many(product_ids)
-    end
-  end
+    query_options = {
+      joins: sort && :product,
+      sort: sort,
+      limit: limit,
+    }
 
-  private
+    Loaders::HasManyLoader
+      .for(OrderItem, :order_id, query_options)
+      .load(object.id)
+      .then do |order_items|
+        product_ids = order_items.map(&:product_id)
 
-  def order_items(*options)
-    Loaders::HasManyLoader.for(OrderItem, :order_id, *options).load(object.id)
+        Loaders::BelongsToLoader
+          .for(Product)
+          .load_many(product_ids)
+      end
   end
 end

@@ -5,30 +5,18 @@ class Types::QueryType < Types::BaseObject
   orders_field
 
   def categories(sort: nil, limit: nil)
-    query = Category
-    query = query.order(sort) if sort
-    query = query.limit(limit) if limit
-    query
+    Category.graphql_query(sort: sort, limit: limit)
   end
 
   def products(sort: nil, limit: nil)
-    query = Product
-    query = query.order(sort) if sort
-    query = query.limit(limit) if limit
-    query
+    Product.graphql_query(sort: sort, limit: limit)
   end
 
   def users(sort: nil, limit: nil)
-    query = User
-    query = query.order(sort) if sort
-    query = query.limit(limit) if limit
-    query
+    User.graphql_query(sort: sort, limit: limit)
   end
 
   def orders(sort: nil, limit: nil)
-    query = Order
-    query = query.order(sort) if sort
-    query = query.limit(limit) if limit
-    query
+    Order.graphql_query(sort: sort, limit: limit)
   end
 end
