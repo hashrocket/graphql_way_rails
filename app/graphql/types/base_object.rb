@@ -14,6 +14,11 @@ module Types
 
     def self.products_field
       field :products, [Types::ProductType], null: false do
+        argument :name, String, required: false
+        argument :color, String, required: false
+        argument :size, String, required: false
+        argument :minPrice, Integer, required: false
+        argument :maxPrice, Integer, required: false
         sort_argument :products, {
           name: :name,
           color: :color,
