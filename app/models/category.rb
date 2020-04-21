@@ -1,12 +1,13 @@
 class Category < ApplicationRecord
   has_many :products
 
+  scope :by_name, ->(name) { where("categories.name ILIKE ?", "#{name}%") if name }
+
   def self.graphql_query(name: nil, joins: nil, sort: nil, limit: nil)
-    query = all
-    query = query.where("categories.name ILIKE ?", "#{name}%") if name
-    query = query.joins(joins) if joins
-    query = query.order(sort) if sort
-    query = query.limit(limit) if limit
-    query
+    Category.all
+      .by_name(name)
+      .joins(joins)
+      .order(sort)
+      .limit(limit)
   end
 end
