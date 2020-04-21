@@ -16,7 +16,7 @@ class Types::QueryType < Types::BaseObject
     User.graphql_query(email: email, sort: sort, limit: limit)
   end
 
-  def orders(sort: nil, limit: nil)
-    Order.graphql_query(sort: sort, limit: limit)
+  def orders(minOrderedAt: nil, maxOrderedAt: nil, sort: nil, limit: nil)
+    Order.graphql_query(minOrderedAt: minOrderedAt, maxOrderedAt: maxOrderedAt, sort: sort, limit: limit)
   end
 end
