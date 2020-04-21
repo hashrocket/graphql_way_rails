@@ -36,6 +36,8 @@ module Types
 
     def self.orders_field
       field :orders, [Types::OrderType], null: false do
+        argument :minOrderedAt, GraphQL::Types::ISO8601DateTime, required: false
+        argument :maxOrderedAt, GraphQL::Types::ISO8601DateTime, required: false
         sort_argument :orders, {
           orderedAt: :ordered_at,
         }
