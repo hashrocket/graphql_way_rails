@@ -17,8 +17,12 @@ module Types
         argument :name, String, required: false
         argument :color, String, required: false
         argument :size, String, required: false
-        argument :min_price, Integer, required: false
-        argument :max_price, Integer, required: false
+        argument :min_price_cents, Integer, required: false, prepare: ->(value, _ctx) {
+          value && value / 100
+        }
+        argument :max_price_cents, Integer, required: false, prepare: ->(value, _ctx) {
+          value && value / 100
+        }
         sort_argument :products, {
           name: :name,
           color: :color,

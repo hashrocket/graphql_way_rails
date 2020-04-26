@@ -14,8 +14,8 @@ class Product < ApplicationRecord
       .by_name(options[:name])
       .by_color(options[:color])
       .by_size(options[:size])
-      .by_min_price(options[:min_price] && options[:min_price] / 100)
-      .by_max_price(options[:max_price] && options[:max_price] / 100)
+      .by_min_price(options[:min_price_cents])
+      .by_max_price(options[:max_price_cents])
       .order(options[:sort])
       .limit(options[:limit])
   end
