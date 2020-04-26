@@ -3,11 +3,10 @@ class Category < ApplicationRecord
 
   scope :by_name, ->(name) { where("categories.name ILIKE ?", "#{name}%") if name }
 
-  def self.graphql_query(name: nil, joins: nil, sort: nil, limit: nil)
+  def self.graphql_query(options)
     Category.all
-      .by_name(name)
-      .joins(joins)
-      .order(sort)
-      .limit(limit)
+      .by_name(options[:name])
+      .order(options[:sort])
+      .limit(options[:limit])
   end
 end

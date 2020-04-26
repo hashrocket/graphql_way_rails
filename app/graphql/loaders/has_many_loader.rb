@@ -6,7 +6,7 @@ class Loaders::HasManyLoader < GraphQL::Batch::Loader
   end
 
   def perform(relation_ids)
-    query = @model.graphql_query(**@query_options)
+    query = @model.graphql_query(@query_options)
 
     if query.limit_value
       sub_query = query.where("#{@model.table_name}.#{@column} = tmp_relation_ids")
