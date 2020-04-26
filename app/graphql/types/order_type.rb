@@ -9,22 +9,9 @@ class Types::OrderType < Types::BaseObject
       .load(object.user_id)
   end
 
-  def products(name: nil, color: nil, size: nil, min_price: nil, max_price: nil, sort: nil, limit: nil)
-    query_options = {
-      product: {
-        name: name,
-        color: color,
-        size: size,
-        min_price: min_price,
-        max_price: max_price
-      },
-      joins: (sort || name || color || size || min_price || max_price) && :product,
-      sort: sort,
-      limit: limit
-    }
-
+  def products(**query_options)
     Loaders::HasManyLoader
-      .for(OrderItem, :order_id, query_options)
+      .for(OrderItem, :order_id, {product: query_options})
       .load(object.id)
       .then do |order_items|
         product_ids = order_items.map(&:product_id)

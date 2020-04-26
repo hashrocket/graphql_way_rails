@@ -2,38 +2,25 @@ class OrderItem < ApplicationRecord
   belongs_to :product
   belongs_to :order
 
-  def self.graphql_query(order: nil, product: nil, joins: nil, sort: nil, limit: nil)
-    query = OrderItem.all
-      .joins(joins)
-      .order(sort)
-      .limit(limit)
+  def self.graphql_query(options)
+    if options[:order]
+      order_options = options[:order].except(:sort, :limit)
 
-    query = if order
-      order_query = Order.graphql_query(
-        min_ordered_at: order[:min_ordered_at],
-        max_ordered_at: order[:max_ordered_at]
-      )
-
-      query.merge(order_query)
-    else
-      query
+      return graphql_query(options[:order].slice(:sort, :limit))
+          .joins(:order)
+          .merge(Order.graphql_query(order_options))
     end
 
-    if product
-      product_query = Product.graphql_query(
-        name: product[:name],
-        color: product[:color],
-        size: product[:size],
-        min_price: product[:min_price],
-        max_price: product[:max_price],
-        joins: product[:joins],
-        sort: product[:sort],
-        limit: product[:limit]
-      )
+    if options[:product]
+      product_options = options[:product].except(:sort, :limit)
 
-      query.merge(product_query)
-    else
-      query
+      return graphql_query(options[:product].slice(:sort, :limit))
+          .joins(:product)
+          .merge(Product.graphql_query(product_options))
     end
+
+    OrderItem.all
+      .order(options[:sort])
+      .limit(options[:limit])
   end
 end

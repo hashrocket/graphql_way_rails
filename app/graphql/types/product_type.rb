@@ -12,19 +12,9 @@ class Types::ProductType < Types::BaseObject
       .load(object.category_id)
   end
 
-  def orders(min_ordered_at: nil, max_ordered_at: nil, sort: nil, limit: nil)
-    query_options = {
-      order: {
-        min_ordered_at: min_ordered_at,
-        max_ordered_at: max_ordered_at
-      },
-      joins: (sort || min_ordered_at || max_ordered_at) && :order,
-      sort: sort,
-      limit: limit
-    }
-
+  def orders(**query_options)
     Loaders::HasManyLoader
-      .for(OrderItem, :product_id, query_options)
+      .for(OrderItem, :product_id, {order: query_options})
       .load(object.id)
       .then do |order_items|
         order_ids = order_items.map(&:order_id)
