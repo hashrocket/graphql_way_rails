@@ -15,6 +15,19 @@ module Types
       argument(:limit, Integer, required: false, default_value: default, prepare: prepare)
     end
 
+    def page_argument(default: 1, min: 1)
+      prepare = ->(value, _ctx) {
+        if value && value >= min
+          value
+        else
+          message = "'page' must be greater or equals than #{min}"
+          raise GraphQL::ExecutionError, message
+        end
+      }
+
+      argument(:page, Integer, required: false, default_value: default, prepare: prepare)
+    end
+
     def sort_argument(**fields_map)
       fields_map = fields_map.map { |k, v| [k.to_s, v] }.to_h
 
