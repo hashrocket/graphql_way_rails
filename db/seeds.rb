@@ -15,13 +15,13 @@ class GraphQLWayRailsDbSeed
     product_ids = Product.ids
 
     puts "=> Creating Users"
-    users = build_list(:user, 100)
+    users = build_list(:user, 500)
     User.import(users)
     user_ids = User.ids
 
     puts "=> Creating Orders"
     orders = user_ids.flat_map { |user_id|
-      build_list(:order, rand(50), user_id: user_id)
+      build_list(:order, rand(100), user_id: user_id)
     }
     Order.import(orders)
     order_ids = Order.ids
@@ -30,7 +30,7 @@ class GraphQLWayRailsDbSeed
     order_items = order_ids.flat_map { |order_id|
       product_ids
         .shuffle
-        .take(rand(1..10))
+        .take(rand(1..25))
         .map do |product_id|
           OrderItem.new(order_id: order_id, product_id: product_id)
         end
