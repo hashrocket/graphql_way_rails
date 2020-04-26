@@ -10,8 +10,8 @@ class OrderItem < ApplicationRecord
 
     query = if order
       order_query = Order.graphql_query(
-        minOrderedAt: order[:minOrderedAt],
-        maxOrderedAt: order[:maxOrderedAt]
+        min_ordered_at: order[:min_ordered_at],
+        max_ordered_at: order[:max_ordered_at]
       )
 
       query.merge(order_query)
@@ -24,8 +24,8 @@ class OrderItem < ApplicationRecord
         name: product[:name],
         color: product[:color],
         size: product[:size],
-        minPrice: product[:minPrice],
-        maxPrice: product[:maxPrice],
+        min_price: product[:min_price],
+        max_price: product[:max_price],
         joins: product[:joins],
         sort: product[:sort],
         limit: product[:limit]

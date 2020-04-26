@@ -12,13 +12,13 @@ class Types::QueryType < Types::BaseObject
     )
   end
 
-  def products(name: nil, color: nil, size: nil, minPrice: nil, maxPrice: nil, sort: nil, limit: nil)
+  def products(name: nil, color: nil, size: nil, min_price: nil, max_price: nil, sort: nil, limit: nil)
     Product.graphql_query(
       name: name,
       color: color,
       size: size,
-      minPrice: minPrice,
-      maxPrice: maxPrice,
+      min_price: min_price,
+      max_price: max_price,
       sort: sort,
       limit: limit
     )
@@ -32,10 +32,10 @@ class Types::QueryType < Types::BaseObject
     )
   end
 
-  def orders(minOrderedAt: nil, maxOrderedAt: nil, sort: nil, limit: nil)
+  def orders(min_ordered_at: nil, max_ordered_at: nil, sort: nil, limit: nil)
     Order.graphql_query(
-      minOrderedAt: minOrderedAt,
-      maxOrderedAt: maxOrderedAt,
+      min_ordered_at: min_ordered_at,
+      max_ordered_at: max_ordered_at,
       sort: sort,
       limit: limit
     )

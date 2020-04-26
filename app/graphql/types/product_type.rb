@@ -12,13 +12,13 @@ class Types::ProductType < Types::BaseObject
       .load(object.category_id)
   end
 
-  def orders(minOrderedAt: nil, maxOrderedAt: nil, sort: nil, limit: nil)
+  def orders(min_ordered_at: nil, max_ordered_at: nil, sort: nil, limit: nil)
     query_options = {
       order: {
-        minOrderedAt: minOrderedAt,
-        maxOrderedAt: maxOrderedAt
+        min_ordered_at: min_ordered_at,
+        max_ordered_at: max_ordered_at
       },
-      joins: (sort || minOrderedAt || maxOrderedAt) && :order,
+      joins: (sort || min_ordered_at || max_ordered_at) && :order,
       sort: sort,
       limit: limit
     }

@@ -97,8 +97,8 @@ RSpec.describe "GraphqlSchemas", type: :request do
 
     it "gets products with filters, sort and limit" do
       gql = <<-GRAPHQL
-        query($name: String, $color: String, $size: String, $minPrice: Int, $maxPrice: Int, $sort: [String!], $limit: Int) {
-          products(name: $name, color: $color, size: $size, minPrice: $minPrice, maxPrice: $maxPrice, sort: $sort, limit: $limit) {
+        query($name: String, $color: String, $size: String, $min_price: Int, $max_price: Int, $sort: [String!], $limit: Int) {
+          products(name: $name, color: $color, size: $size, minPrice: $min_price, maxPrice: $max_price, sort: $sort, limit: $limit) {
             name
             color
             size
@@ -131,7 +131,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, minPrice: 800, maxPrice: 1200)).to eq({"data" => {
+      expect(query(gql, min_price: 800, max_price: 1200)).to eq({"data" => {
         "products" => [
           {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
         ]
@@ -211,10 +211,10 @@ RSpec.describe "GraphqlSchemas", type: :request do
 
     it "gets categories.products with filters, sort and limit" do
       gql = <<-GRAPHQL
-        query($name: String, $color: String, $size: String, $minPrice: Int, $maxPrice: Int, $sort: [String!], $limit: Int) {
+        query($name: String, $color: String, $size: String, $min_price: Int, $max_price: Int, $sort: [String!], $limit: Int) {
           categories {
             name
-            products(name: $name, color: $color, size: $size, minPrice: $minPrice, maxPrice: $maxPrice, sort: $sort, limit: $limit) {
+            products(name: $name, color: $color, size: $size, minPrice: $min_price, maxPrice: $max_price, sort: $sort, limit: $limit) {
               name
               color
               size
@@ -262,7 +262,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, minPrice: 800, maxPrice: 1200)).to eq({"data" => {
+      expect(query(gql, min_price: 800, max_price: 1200)).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
@@ -372,10 +372,10 @@ RSpec.describe "GraphqlSchemas", type: :request do
 
     it "gets orders.products with filters, sort and limit" do
       gql = <<-GRAPHQL
-        query($name: String, $color: String, $size: String, $minPrice: Int, $maxPrice: Int, $sort: [String!], $limit: Int) {
+        query($name: String, $color: String, $size: String, $min_price: Int, $max_price: Int, $sort: [String!], $limit: Int) {
           orders {
             orderedAt
-            products(name: $name, color: $color, size: $size, minPrice: $minPrice, maxPrice: $maxPrice, sort: $sort, limit: $limit) {
+            products(name: $name, color: $color, size: $size, minPrice: $min_price, maxPrice: $max_price, sort: $sort, limit: $limit) {
               name
               color
               size
@@ -423,7 +423,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, minPrice: 800, maxPrice: 1200)).to eq({"data" => {
+      expect(query(gql, min_price: 800, max_price: 1200)).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
@@ -548,8 +548,8 @@ RSpec.describe "GraphqlSchemas", type: :request do
 
     it "gets orders with filters, sort and limit" do
       gql = <<-GRAPHQL
-        query($minOrderedAt: ISO8601DateTime, $maxOrderedAt: ISO8601DateTime, $sort: [String!], $limit: Int) {
-          orders(minOrderedAt: $minOrderedAt, maxOrderedAt: $maxOrderedAt, sort: $sort, limit: $limit) {
+        query($min_ordered_at: ISO8601DateTime, $max_ordered_at: ISO8601DateTime, $sort: [String!], $limit: Int) {
+          orders(minOrderedAt: $min_ordered_at, maxOrderedAt: $max_ordered_at, sort: $sort, limit: $limit) {
             orderedAt
           }
         }
@@ -561,7 +561,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         {"orderedAt" => order_3rd.ordered_at.iso8601}
       ])
 
-      expect(query(gql, minOrderedAt: "2020-04-02", maxOrderedAt: "2020-04-03")).to eq({"data" => {
+      expect(query(gql, min_ordered_at: "2020-04-02", max_ordered_at: "2020-04-03")).to eq({"data" => {
         "orders" => [
           {"orderedAt" => order_2nd.ordered_at.iso8601}
         ]
@@ -593,10 +593,10 @@ RSpec.describe "GraphqlSchemas", type: :request do
 
     it "gets users.orders with filters, sort and limit" do
       gql = <<-GRAPHQL
-        query($minOrderedAt: ISO8601DateTime, $maxOrderedAt: ISO8601DateTime, $sort: [String!], $limit: Int) {
+        query($min_ordered_at: ISO8601DateTime, $max_ordered_at: ISO8601DateTime, $sort: [String!], $limit: Int) {
           users {
             email
-            orders(minOrderedAt: $minOrderedAt, maxOrderedAt: $maxOrderedAt, sort: $sort, limit: $limit) {
+            orders(minOrderedAt: $min_ordered_at, maxOrderedAt: $max_ordered_at, sort: $sort, limit: $limit) {
               orderedAt
             }
           }
@@ -614,7 +614,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, minOrderedAt: "2020-04-02", maxOrderedAt: "2020-04-03")).to eq({"data" => {
+      expect(query(gql, min_ordered_at: "2020-04-02", max_ordered_at: "2020-04-03")).to eq({"data" => {
         "users" => [{
           "email" => alan.email,
           "orders" => [
@@ -658,10 +658,10 @@ RSpec.describe "GraphqlSchemas", type: :request do
 
     it "gets products.orders with filters, sort and limit" do
       gql = <<-GRAPHQL
-        query($minOrderedAt: ISO8601DateTime, $maxOrderedAt: ISO8601DateTime, $sort: [String!], $limit: Int) {
+        query($min_ordered_at: ISO8601DateTime, $max_ordered_at: ISO8601DateTime, $sort: [String!], $limit: Int) {
           products {
             name
-            orders(minOrderedAt: $minOrderedAt, maxOrderedAt: $maxOrderedAt, sort: $sort, limit: $limit) {
+            orders(minOrderedAt: $min_ordered_at, maxOrderedAt: $max_ordered_at, sort: $sort, limit: $limit) {
               orderedAt
             }
           }
@@ -679,7 +679,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, minOrderedAt: "2020-04-02", maxOrderedAt: "2020-04-03")).to eq({"data" => {
+      expect(query(gql, min_ordered_at: "2020-04-02", max_ordered_at: "2020-04-03")).to eq({"data" => {
         "products" => [{
           "name" => hammer.name,
           "orders" => [
