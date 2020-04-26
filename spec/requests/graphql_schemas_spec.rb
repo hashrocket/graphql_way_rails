@@ -97,8 +97,8 @@ RSpec.describe "GraphqlSchemas", type: :request do
 
     it "gets products with filters, sort and limit" do
       gql = <<-GRAPHQL
-        query($name: String, $color: String, $size: String, $min_price: Int, $max_price: Int, $sort: [String!], $limit: Int) {
-          products(name: $name, color: $color, size: $size, minPrice: $min_price, maxPrice: $max_price, sort: $sort, limit: $limit) {
+        query($name: String, $color: String, $size: String, $min_price_cents: Int, $max_price_cents: Int, $sort: [String!], $limit: Int) {
+          products(name: $name, color: $color, size: $size, minPriceCents: $min_price_cents, maxPriceCents: $max_price_cents, sort: $sort, limit: $limit) {
             name
             color
             size
@@ -131,7 +131,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, min_price: 800, max_price: 1200)).to eq({"data" => {
+      expect(query(gql, min_price_cents: 800, max_price_cents: 1200)).to eq({"data" => {
         "products" => [
           {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
         ]
@@ -211,10 +211,10 @@ RSpec.describe "GraphqlSchemas", type: :request do
 
     it "gets categories.products with filters, sort and limit" do
       gql = <<-GRAPHQL
-        query($name: String, $color: String, $size: String, $min_price: Int, $max_price: Int, $sort: [String!], $limit: Int) {
+        query($name: String, $color: String, $size: String, $min_price_cents: Int, $max_price_cents: Int, $sort: [String!], $limit: Int) {
           categories {
             name
-            products(name: $name, color: $color, size: $size, minPrice: $min_price, maxPrice: $max_price, sort: $sort, limit: $limit) {
+            products(name: $name, color: $color, size: $size, minPriceCents: $min_price_cents, maxPriceCents: $max_price_cents, sort: $sort, limit: $limit) {
               name
               color
               size
@@ -262,7 +262,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, min_price: 800, max_price: 1200)).to eq({"data" => {
+      expect(query(gql, min_price_cents: 800, max_price_cents: 1200)).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
@@ -372,10 +372,10 @@ RSpec.describe "GraphqlSchemas", type: :request do
 
     it "gets orders.products with filters, sort and limit" do
       gql = <<-GRAPHQL
-        query($name: String, $color: String, $size: String, $min_price: Int, $max_price: Int, $sort: [String!], $limit: Int) {
+        query($name: String, $color: String, $size: String, $min_price_cents: Int, $max_price_cents: Int, $sort: [String!], $limit: Int) {
           orders {
             orderedAt
-            products(name: $name, color: $color, size: $size, minPrice: $min_price, maxPrice: $max_price, sort: $sort, limit: $limit) {
+            products(name: $name, color: $color, size: $size, minPriceCents: $min_price_cents, maxPriceCents: $max_price_cents, sort: $sort, limit: $limit) {
               name
               color
               size
@@ -423,7 +423,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, min_price: 800, max_price: 1200)).to eq({"data" => {
+      expect(query(gql, min_price_cents: 800, max_price_cents: 1200)).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
