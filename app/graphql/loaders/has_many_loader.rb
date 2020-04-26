@@ -16,12 +16,12 @@ class Loaders::HasManyLoader < GraphQL::Batch::Loader
         .from("UNNEST(ARRAY[#{relation_ids.join(",")}]) tmp_relation_ids")
         .joins("JOIN LATERAL (#{sub_query.to_sql}) tmp_lat_join_tab ON TRUE")
     else
-      query = query.where({ @column => relation_ids })
+      query = query.where({@column => relation_ids})
     end
 
-    records_by_relation_id = query.group_by do |result|
+    records_by_relation_id = query.group_by { |result|
       result.public_send(@column)
-    end
+    }
 
     relation_ids.each do |id|
       fulfill(id, records_by_relation_id[id] || [])

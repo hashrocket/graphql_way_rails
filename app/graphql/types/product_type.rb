@@ -16,11 +16,11 @@ class Types::ProductType < Types::BaseObject
     query_options = {
       order: {
         minOrderedAt: minOrderedAt,
-        maxOrderedAt: maxOrderedAt,
+        maxOrderedAt: maxOrderedAt
       },
       joins: (sort || minOrderedAt || maxOrderedAt) && :order,
       sort: sort,
-      limit: limit,
+      limit: limit
     }
 
     Loaders::HasManyLoader

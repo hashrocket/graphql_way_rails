@@ -1,46 +1,44 @@
-include FactoryBot::Syntax::Methods
+class GraphQLWayRailsDbSeed
+  include FactoryBot::Syntax::Methods
 
-puts "=> Creating Categories"
-categories = (1..25).map do
-  build(:category)
-end
-Category.import(categories)
-category_ids = Category.ids
+  def run
+    puts "=> Creating Categories"
+    categories = build_list(:category, 25)
+    Category.import(categories)
+    category_ids = Category.ids
 
-puts "=> Creating Products"
-products = category_ids.flat_map do |category_id|
-  (0..rand(50)).map do
-    build(:product, category_id: category_id)
+    puts "=> Creating Products"
+    products = category_ids.flat_map { |category_id|
+      build_list(:product, rand(50), category_id: category_id)
+    }
+    Product.import(products)
+    product_ids = Product.ids
+
+    puts "=> Creating Users"
+    users = build_list(:user, 100)
+    User.import(users)
+    user_ids = User.ids
+
+    puts "=> Creating Orders"
+    orders = user_ids.flat_map { |user_id|
+      build_list(:order, rand(50), user_id: user_id)
+    }
+    Order.import(orders)
+    order_ids = Order.ids
+
+    puts "=> Creating OrderItems"
+    order_items = order_ids.flat_map { |order_id|
+      product_ids
+        .shuffle
+        .take(rand(1..10))
+        .map do |product_id|
+          OrderItem.new(order_id: order_id, product_id: product_id)
+        end
+    }
+    OrderItem.import(order_items)
+
+    puts "=> Seeding has finished successfully!"
   end
 end
-Product.import(products)
-product_ids = Product.ids
 
-puts "=> Creating Users"
-users = (1..100).map do
-  build(:user)
-end
-User.import(users)
-user_ids = User.ids
-
-puts "=> Creating Orders"
-orders = user_ids.flat_map do |user_id|
-  (0..rand(50)).map do
-    build(:order, user_id: user_id)
-  end
-end
-Order.import(orders)
-order_ids = Order.ids
-
-puts "=> Creating OrderItems"
-order_items = order_ids.flat_map do |order_id|
-  (0..rand(10))
-    .map { product_ids.sample }
-    .uniq
-    .map do |product_id|
-      OrderItem.new(order_id: order_id, product_id: product_id)
-    end
-end
-OrderItem.import(order_items)
-
-puts "=> Seeding has finished successfully!"
+GraphQLWayRailsDbSeed.new.run

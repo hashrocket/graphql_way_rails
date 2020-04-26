@@ -10,7 +10,7 @@ class Types::CategoryType < Types::BaseObject
       minPrice: minPrice,
       maxPrice: maxPrice,
       sort: sort,
-      limit: limit,
+      limit: limit
     }
 
     Loaders::HasManyLoader
