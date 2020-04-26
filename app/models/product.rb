@@ -9,13 +9,13 @@ class Product < ApplicationRecord
   scope :by_min_price, ->(price) { where("products.price >= ?", price) if price }
   scope :by_max_price, ->(price) { where("products.price <= ?", price) if price }
 
-  def self.graphql_query(name: nil, color: nil, size: nil, minPrice: nil, maxPrice: nil, joins: nil, sort: nil, limit: nil)
+  def self.graphql_query(name: nil, color: nil, size: nil, min_price: nil, max_price: nil, joins: nil, sort: nil, limit: nil)
     Product.all
       .by_name(name)
       .by_color(color)
       .by_size(size)
-      .by_min_price(minPrice && minPrice / 100)
-      .by_max_price(maxPrice && maxPrice / 100)
+      .by_min_price(min_price && min_price / 100)
+      .by_max_price(max_price && max_price / 100)
       .joins(joins)
       .order(sort)
       .limit(limit)

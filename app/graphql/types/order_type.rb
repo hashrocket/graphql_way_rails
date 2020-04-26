@@ -9,16 +9,16 @@ class Types::OrderType < Types::BaseObject
       .load(object.user_id)
   end
 
-  def products(name: nil, color: nil, size: nil, minPrice: nil, maxPrice: nil, sort: nil, limit: nil)
+  def products(name: nil, color: nil, size: nil, min_price: nil, max_price: nil, sort: nil, limit: nil)
     query_options = {
       product: {
         name: name,
         color: color,
         size: size,
-        minPrice: minPrice,
-        maxPrice: maxPrice
+        min_price: min_price,
+        max_price: max_price
       },
-      joins: (sort || name || color || size || minPrice || maxPrice) && :product,
+      joins: (sort || name || color || size || min_price || max_price) && :product,
       sort: sort,
       limit: limit
     }

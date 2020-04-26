@@ -17,8 +17,8 @@ module Types
         argument :name, String, required: false
         argument :color, String, required: false
         argument :size, String, required: false
-        argument :minPrice, Integer, required: false
-        argument :maxPrice, Integer, required: false
+        argument :min_price, Integer, required: false
+        argument :max_price, Integer, required: false
         sort_argument :products, {
           name: :name,
           color: :color,
@@ -41,8 +41,8 @@ module Types
 
     def self.orders_field
       field :orders, [Types::OrderType], null: false do
-        argument :minOrderedAt, GraphQL::Types::ISO8601DateTime, required: false
-        argument :maxOrderedAt, GraphQL::Types::ISO8601DateTime, required: false
+        argument :min_ordered_at, GraphQL::Types::ISO8601DateTime, required: false
+        argument :max_ordered_at, GraphQL::Types::ISO8601DateTime, required: false
         sort_argument :orders, {
           orderedAt: :ordered_at
         }

@@ -2,10 +2,10 @@ class Types::UserType < Types::BaseObject
   field :email, String, null: false
   orders_field
 
-  def orders(minOrderedAt: nil, maxOrderedAt: nil, sort: nil, limit: nil)
+  def orders(min_ordered_at: nil, max_ordered_at: nil, sort: nil, limit: nil)
     query_options = {
-      minOrderedAt: minOrderedAt,
-      maxOrderedAt: maxOrderedAt,
+      min_ordered_at: min_ordered_at,
+      max_ordered_at: max_ordered_at,
       sort: sort,
       limit: limit
     }
