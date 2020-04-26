@@ -6,7 +6,7 @@ module Types
       field :categories, [Types::CategoryType], null: false do
         argument :name, String, required: false
         sort_argument :categories, {
-          name: :name,
+          name: :name
         }
         limit_argument
       end
@@ -23,7 +23,7 @@ module Types
           name: :name,
           color: :color,
           size: :size,
-          price: :price,
+          price: :price
         }
         limit_argument
       end
@@ -33,7 +33,7 @@ module Types
       field :users, [Types::UserType], null: false do
         argument :email, String, required: false
         sort_argument :users, {
-          email: :email,
+          email: :email
         }
         limit_argument
       end
@@ -44,7 +44,7 @@ module Types
         argument :minOrderedAt, GraphQL::Types::ISO8601DateTime, required: false
         argument :maxOrderedAt, GraphQL::Types::ISO8601DateTime, required: false
         sort_argument :orders, {
-          orderedAt: :ordered_at,
+          orderedAt: :ordered_at
         }
         limit_argument
       end

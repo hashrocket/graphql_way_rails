@@ -16,11 +16,11 @@ class Types::OrderType < Types::BaseObject
         color: color,
         size: size,
         minPrice: minPrice,
-        maxPrice: maxPrice,
+        maxPrice: maxPrice
       },
       joins: (sort || name || color || size || minPrice || maxPrice) && :product,
       sort: sort,
-      limit: limit,
+      limit: limit
     }
 
     Loaders::HasManyLoader

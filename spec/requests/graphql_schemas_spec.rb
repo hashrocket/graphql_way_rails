@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "GraphqlSchemas", type: :request do
   def query(gql, **variables)
@@ -21,38 +21,38 @@ RSpec.describe "GraphqlSchemas", type: :request do
       GRAPHQL
 
       expect(query(gql)["data"]["categories"]).to match_array([
-        { "name" => books.name },
-        { "name" => games.name },
-        { "name" => tools.name },
+        {"name" => books.name},
+        {"name" => games.name},
+        {"name" => tools.name}
       ])
 
-      expect(query(gql, name: "gam")).to eq({ "data" => {
+      expect(query(gql, name: "gam")).to eq({"data" => {
         "categories" => [
-          { "name" => games.name },
-        ],
+          {"name" => games.name}
+        ]
       }})
 
-      expect(query(gql, sort: ["+name"])).to eq({ "data" => {
+      expect(query(gql, sort: ["+name"])).to eq({"data" => {
         "categories" => [
-          { "name" => books.name },
-          { "name" => games.name },
-          { "name" => tools.name },
-        ],
+          {"name" => books.name},
+          {"name" => games.name},
+          {"name" => tools.name}
+        ]
       }})
 
-      expect(query(gql, sort: ["-name"])).to eq({ "data" => {
+      expect(query(gql, sort: ["-name"])).to eq({"data" => {
         "categories" => [
-          { "name" => tools.name },
-          { "name" => games.name },
-          { "name" => books.name },
-        ],
+          {"name" => tools.name},
+          {"name" => games.name},
+          {"name" => books.name}
+        ]
       }})
 
-      expect(query(gql, sort: ["+name"], limit: 2)).to eq({ "data" => {
+      expect(query(gql, sort: ["+name"], limit: 2)).to eq({"data" => {
         "categories" => [
-          { "name" => books.name },
-          { "name" => games.name },
-        ],
+          {"name" => books.name},
+          {"name" => games.name}
+        ]
       }})
     end
 
@@ -68,15 +68,15 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }
       GRAPHQL
 
-      expect(query(gql)).to eq({ "data" => {
+      expect(query(gql)).to eq({"data" => {
         "products" => [
           {
             "name" => hammer.name,
             "category" => {
-              "name" => tools.name,
-            },
-          },
-        ],
+              "name" => tools.name
+            }
+          }
+        ]
       }})
     end
   end
@@ -87,7 +87,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
     let!(:hammer) { create(:product, category: tools, name: "Hammer", color: "black", size: "small", price: 10.0) }
     let!(:pliers) { create(:product, category: tools, name: "Pliers", color: "green", size: "medium", price: 5.0) }
     let!(:alan) { create(:user, email: "alan@mail.com") }
-    let!(:order_1st) { create(:order, user: alan, ordered_at: DateTime.parse('2020-04-01T08:00:00Z')) }
+    let!(:order_1st) { create(:order, user: alan, ordered_at: DateTime.parse("2020-04-01T08:00:00Z")) }
 
     before do
       [clamps, hammer, pliers].each do |product|
@@ -108,104 +108,104 @@ RSpec.describe "GraphqlSchemas", type: :request do
       GRAPHQL
 
       expect(query(gql)["data"]["products"]).to match_array([
-        { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-        { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-        { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
+        {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+        {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+        {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500}
       ])
 
-      expect(query(gql, name: "ham")).to eq({ "data" => {
+      expect(query(gql, name: "ham")).to eq({"data" => {
         "products" => [
-          { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-        ],
+          {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+        ]
       }})
 
-      expect(query(gql, color: "black")).to eq({ "data" => {
+      expect(query(gql, color: "black")).to eq({"data" => {
         "products" => [
-          { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-        ],
+          {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+        ]
       }})
 
-      expect(query(gql, size: "small")).to eq({ "data" => {
+      expect(query(gql, size: "small")).to eq({"data" => {
         "products" => [
-          { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-        ],
+          {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+        ]
       }})
 
-      expect(query(gql, minPrice: 800, maxPrice: 1200)).to eq({ "data" => {
+      expect(query(gql, minPrice: 800, maxPrice: 1200)).to eq({"data" => {
         "products" => [
-          { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-        ],
+          {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+        ]
       }})
 
-      expect(query(gql, sort: ["+name"])).to eq({ "data" => {
+      expect(query(gql, sort: ["+name"])).to eq({"data" => {
         "products" => [
-          { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-          { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-        ],
+          {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+          {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+          {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500}
+        ]
       }})
 
-      expect(query(gql, sort: ["-name"])).to eq({ "data" => {
+      expect(query(gql, sort: ["-name"])).to eq({"data" => {
         "products" => [
-          { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-          { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-        ],
+          {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+          {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+          {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500}
+        ]
       }})
 
-      expect(query(gql, sort: ["+color"])).to eq({ "data" => {
+      expect(query(gql, sort: ["+color"])).to eq({"data" => {
         "products" => [
-          { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-          { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-        ],
+          {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+          {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+          {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500}
+        ]
       }})
 
-      expect(query(gql, sort: ["-color"])).to eq({ "data" => {
+      expect(query(gql, sort: ["-color"])).to eq({"data" => {
         "products" => [
-          { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-          { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-          { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-        ],
+          {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+          {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+          {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+        ]
       }})
 
-      expect(query(gql, sort: ["+size"])).to eq({ "data" => {
+      expect(query(gql, sort: ["+size"])).to eq({"data" => {
         "products" => [
-          { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-          { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-          { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-        ],
+          {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+          {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+          {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+        ]
       }})
 
-      expect(query(gql, sort: ["-size"])).to eq({ "data" => {
+      expect(query(gql, sort: ["-size"])).to eq({"data" => {
         "products" => [
-          { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-          { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-        ],
+          {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+          {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+          {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500}
+        ]
       }})
 
-      expect(query(gql, sort: ["+price"])).to eq({ "data" => {
+      expect(query(gql, sort: ["+price"])).to eq({"data" => {
         "products" => [
-          { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-          { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-        ],
+          {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+          {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+          {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500}
+        ]
       }})
 
-      expect(query(gql, sort: ["-price"])).to eq({ "data" => {
+      expect(query(gql, sort: ["-price"])).to eq({"data" => {
         "products" => [
-          { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-          { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-        ],
+          {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+          {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+          {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500}
+        ]
       }})
 
-      expect(query(gql, sort: ["+name"], limit: 2)).to eq({ "data" => {
+      expect(query(gql, sort: ["+name"], limit: 2)).to eq({"data" => {
         "products" => [
-          { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-          { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-        ],
+          {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+          {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+        ]
       }})
     end
 
@@ -224,149 +224,149 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }
       GRAPHQL
 
-      expect(query(gql)).to eq({ "data" => {
+      expect(query(gql)).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-          ],
-        }],
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500}
+          ]
+        }]
       }})
 
-      expect(query(gql, name: "ham")).to eq({ "data" => {
+      expect(query(gql, name: "ham")).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          ],
-        }],
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+          ]
+        }]
       }})
 
-      expect(query(gql, color: "black")).to eq({ "data" => {
+      expect(query(gql, color: "black")).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          ],
-        }],
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+          ]
+        }]
       }})
 
-      expect(query(gql, size: "small")).to eq({ "data" => {
+      expect(query(gql, size: "small")).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          ],
-        }],
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+          ]
+        }]
       }})
 
-      expect(query(gql, minPrice: 800, maxPrice: 1200)).to eq({ "data" => {
+      expect(query(gql, minPrice: 800, maxPrice: 1200)).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          ],
-        }],
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["+name"])).to eq({ "data" => {
+      expect(query(gql, sort: ["+name"])).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-          ],
-        }],
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["-name"])).to eq({ "data" => {
+      expect(query(gql, sort: ["-name"])).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-          ],
-        }],
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["+color"])).to eq({ "data" => {
+      expect(query(gql, sort: ["+color"])).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-          ],
-        }],
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["-color"])).to eq({ "data" => {
+      expect(query(gql, sort: ["-color"])).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          ],
-        }],
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["+size"])).to eq({ "data" => {
+      expect(query(gql, sort: ["+size"])).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          ],
-        }],
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["-size"])).to eq({ "data" => {
+      expect(query(gql, sort: ["-size"])).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-          ],
-        }],
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["+price"])).to eq({ "data" => {
+      expect(query(gql, sort: ["+price"])).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-          ],
-        }],
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["-price"])).to eq({ "data" => {
+      expect(query(gql, sort: ["-price"])).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-          ],
-        }],
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["+name"], limit: 2)).to eq({ "data" => {
+      expect(query(gql, sort: ["+name"], limit: 2)).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          ],
-        }],
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+          ]
+        }]
       }})
     end
 
@@ -385,158 +385,158 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }
       GRAPHQL
 
-      expect(query(gql)).to eq({ "data" => {
+      expect(query(gql)).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-          ],
-        }],
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500}
+          ]
+        }]
       }})
 
-      expect(query(gql, name: "ham")).to eq({ "data" => {
+      expect(query(gql, name: "ham")).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          ],
-        }],
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+          ]
+        }]
       }})
 
-      expect(query(gql, color: "black")).to eq({ "data" => {
+      expect(query(gql, color: "black")).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          ],
-        }],
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+          ]
+        }]
       }})
 
-      expect(query(gql, size: "small")).to eq({ "data" => {
+      expect(query(gql, size: "small")).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          ],
-        }],
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+          ]
+        }]
       }})
 
-      expect(query(gql, minPrice: 800, maxPrice: 1200)).to eq({ "data" => {
+      expect(query(gql, minPrice: 800, maxPrice: 1200)).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          ],
-        }],
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["+name"])).to eq({ "data" => {
+      expect(query(gql, sort: ["+name"])).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-          ],
-        }],
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["-name"])).to eq({ "data" => {
+      expect(query(gql, sort: ["-name"])).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-          ],
-        }],
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["+color"])).to eq({ "data" => {
+      expect(query(gql, sort: ["+color"])).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-          ],
-        }],
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["-color"])).to eq({ "data" => {
+      expect(query(gql, sort: ["-color"])).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          ],
-        }],
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["+size"])).to eq({ "data" => {
+      expect(query(gql, sort: ["+size"])).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          ],
-        }],
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["-size"])).to eq({ "data" => {
+      expect(query(gql, sort: ["-size"])).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-          ],
-        }],
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["+price"])).to eq({ "data" => {
+      expect(query(gql, sort: ["+price"])).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-          ],
-        }],
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["-price"])).to eq({ "data" => {
+      expect(query(gql, sort: ["-price"])).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-            { "name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500 },
-          ],
-        }],
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
+            {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["+name"], limit: 2)).to eq({ "data" => {
+      expect(query(gql, sort: ["+name"], limit: 2)).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
-            { "name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500 },
-            { "name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000 },
-          ],
-        }],
+            {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
+            {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
+          ]
+        }]
       }})
     end
   end
 
   describe "orders" do
     let!(:alan) { create(:user, email: "alan@mail.com") }
-    let!(:order_1st) { create(:order, user: alan, ordered_at: DateTime.parse('2020-04-01T08:00:00Z')) }
-    let!(:order_2nd) { create(:order, user: alan, ordered_at: DateTime.parse('2020-04-02T08:00:00Z')) }
-    let!(:order_3rd) { create(:order, user: alan, ordered_at: DateTime.parse('2020-04-03T08:00:00Z')) }
+    let!(:order_1st) { create(:order, user: alan, ordered_at: DateTime.parse("2020-04-01T08:00:00Z")) }
+    let!(:order_2nd) { create(:order, user: alan, ordered_at: DateTime.parse("2020-04-02T08:00:00Z")) }
+    let!(:order_3rd) { create(:order, user: alan, ordered_at: DateTime.parse("2020-04-03T08:00:00Z")) }
     let!(:tools) { create(:category, name: "Tools") }
     let!(:hammer) { create(:product, category: tools, name: "Hammer", color: "black", size: "small", price: 10.0) }
 
@@ -556,38 +556,38 @@ RSpec.describe "GraphqlSchemas", type: :request do
       GRAPHQL
 
       expect(query(gql)["data"]["orders"]).to match_array([
-        { "orderedAt" => order_1st.ordered_at.iso8601 },
-        { "orderedAt" => order_2nd.ordered_at.iso8601 },
-        { "orderedAt" => order_3rd.ordered_at.iso8601 },
+        {"orderedAt" => order_1st.ordered_at.iso8601},
+        {"orderedAt" => order_2nd.ordered_at.iso8601},
+        {"orderedAt" => order_3rd.ordered_at.iso8601}
       ])
 
-      expect(query(gql, minOrderedAt: "2020-04-02", maxOrderedAt: "2020-04-03")).to eq({ "data" => {
+      expect(query(gql, minOrderedAt: "2020-04-02", maxOrderedAt: "2020-04-03")).to eq({"data" => {
         "orders" => [
-          { "orderedAt" => order_2nd.ordered_at.iso8601 },
-        ],
+          {"orderedAt" => order_2nd.ordered_at.iso8601}
+        ]
       }})
 
-      expect(query(gql, sort: ["+orderedAt"])).to eq({ "data" => {
+      expect(query(gql, sort: ["+orderedAt"])).to eq({"data" => {
         "orders" => [
-          { "orderedAt" => order_1st.ordered_at.iso8601 },
-          { "orderedAt" => order_2nd.ordered_at.iso8601 },
-          { "orderedAt" => order_3rd.ordered_at.iso8601 },
-        ],
+          {"orderedAt" => order_1st.ordered_at.iso8601},
+          {"orderedAt" => order_2nd.ordered_at.iso8601},
+          {"orderedAt" => order_3rd.ordered_at.iso8601}
+        ]
       }})
 
-      expect(query(gql, sort: ["-orderedAt"])).to eq({ "data" => {
+      expect(query(gql, sort: ["-orderedAt"])).to eq({"data" => {
         "orders" => [
-          { "orderedAt" => order_3rd.ordered_at.iso8601 },
-          { "orderedAt" => order_2nd.ordered_at.iso8601 },
-          { "orderedAt" => order_1st.ordered_at.iso8601 },
-        ],
+          {"orderedAt" => order_3rd.ordered_at.iso8601},
+          {"orderedAt" => order_2nd.ordered_at.iso8601},
+          {"orderedAt" => order_1st.ordered_at.iso8601}
+        ]
       }})
 
-      expect(query(gql, sort: ["+orderedAt"], limit: 2)).to eq({ "data" => {
+      expect(query(gql, sort: ["+orderedAt"], limit: 2)).to eq({"data" => {
         "orders" => [
-          { "orderedAt" => order_1st.ordered_at.iso8601 },
-          { "orderedAt" => order_2nd.ordered_at.iso8601 },
-        ],
+          {"orderedAt" => order_1st.ordered_at.iso8601},
+          {"orderedAt" => order_2nd.ordered_at.iso8601}
+        ]
       }})
     end
 
@@ -603,56 +603,56 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }
       GRAPHQL
 
-      expect(query(gql)).to eq({ "data" => {
+      expect(query(gql)).to eq({"data" => {
         "users" => [{
           "email" => alan.email,
           "orders" => [
-            { "orderedAt" => order_1st.ordered_at.iso8601 },
-            { "orderedAt" => order_2nd.ordered_at.iso8601 },
-            { "orderedAt" => order_3rd.ordered_at.iso8601 },
-          ],
-        }],
+            {"orderedAt" => order_1st.ordered_at.iso8601},
+            {"orderedAt" => order_2nd.ordered_at.iso8601},
+            {"orderedAt" => order_3rd.ordered_at.iso8601}
+          ]
+        }]
       }})
 
-      expect(query(gql, minOrderedAt: "2020-04-02", maxOrderedAt: "2020-04-03")).to eq({ "data" => {
+      expect(query(gql, minOrderedAt: "2020-04-02", maxOrderedAt: "2020-04-03")).to eq({"data" => {
         "users" => [{
           "email" => alan.email,
           "orders" => [
-            { "orderedAt" => order_2nd.ordered_at.iso8601 },
-          ],
-        }],
+            {"orderedAt" => order_2nd.ordered_at.iso8601}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["+orderedAt"])).to eq({ "data" => {
+      expect(query(gql, sort: ["+orderedAt"])).to eq({"data" => {
         "users" => [{
           "email" => alan.email,
           "orders" => [
-            { "orderedAt" => order_1st.ordered_at.iso8601 },
-            { "orderedAt" => order_2nd.ordered_at.iso8601 },
-            { "orderedAt" => order_3rd.ordered_at.iso8601 },
-          ],
-        }],
+            {"orderedAt" => order_1st.ordered_at.iso8601},
+            {"orderedAt" => order_2nd.ordered_at.iso8601},
+            {"orderedAt" => order_3rd.ordered_at.iso8601}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["-orderedAt"])).to eq({ "data" => {
+      expect(query(gql, sort: ["-orderedAt"])).to eq({"data" => {
         "users" => [{
           "email" => alan.email,
           "orders" => [
-            { "orderedAt" => order_3rd.ordered_at.iso8601 },
-            { "orderedAt" => order_2nd.ordered_at.iso8601 },
-            { "orderedAt" => order_1st.ordered_at.iso8601 },
-          ],
-        }],
+            {"orderedAt" => order_3rd.ordered_at.iso8601},
+            {"orderedAt" => order_2nd.ordered_at.iso8601},
+            {"orderedAt" => order_1st.ordered_at.iso8601}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["+orderedAt"], limit: 2)).to eq({ "data" => {
+      expect(query(gql, sort: ["+orderedAt"], limit: 2)).to eq({"data" => {
         "users" => [{
           "email" => alan.email,
           "orders" => [
-            { "orderedAt" => order_1st.ordered_at.iso8601 },
-            { "orderedAt" => order_2nd.ordered_at.iso8601 },
-          ],
-        }],
+            {"orderedAt" => order_1st.ordered_at.iso8601},
+            {"orderedAt" => order_2nd.ordered_at.iso8601}
+          ]
+        }]
       }})
     end
 
@@ -668,56 +668,56 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }
       GRAPHQL
 
-      expect(query(gql)).to eq({ "data" => {
+      expect(query(gql)).to eq({"data" => {
         "products" => [{
           "name" => hammer.name,
           "orders" => [
-            { "orderedAt" => order_1st.ordered_at.iso8601 },
-            { "orderedAt" => order_2nd.ordered_at.iso8601 },
-            { "orderedAt" => order_3rd.ordered_at.iso8601 },
-          ],
-        }],
+            {"orderedAt" => order_1st.ordered_at.iso8601},
+            {"orderedAt" => order_2nd.ordered_at.iso8601},
+            {"orderedAt" => order_3rd.ordered_at.iso8601}
+          ]
+        }]
       }})
 
-      expect(query(gql, minOrderedAt: "2020-04-02", maxOrderedAt: "2020-04-03")).to eq({ "data" => {
+      expect(query(gql, minOrderedAt: "2020-04-02", maxOrderedAt: "2020-04-03")).to eq({"data" => {
         "products" => [{
           "name" => hammer.name,
           "orders" => [
-            { "orderedAt" => order_2nd.ordered_at.iso8601 },
-          ],
-        }],
+            {"orderedAt" => order_2nd.ordered_at.iso8601}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["+orderedAt"])).to eq({ "data" => {
+      expect(query(gql, sort: ["+orderedAt"])).to eq({"data" => {
         "products" => [{
           "name" => hammer.name,
           "orders" => [
-            { "orderedAt" => order_1st.ordered_at.iso8601 },
-            { "orderedAt" => order_2nd.ordered_at.iso8601 },
-            { "orderedAt" => order_3rd.ordered_at.iso8601 },
-          ],
-        }],
+            {"orderedAt" => order_1st.ordered_at.iso8601},
+            {"orderedAt" => order_2nd.ordered_at.iso8601},
+            {"orderedAt" => order_3rd.ordered_at.iso8601}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["-orderedAt"])).to eq({ "data" => {
+      expect(query(gql, sort: ["-orderedAt"])).to eq({"data" => {
         "products" => [{
           "name" => hammer.name,
           "orders" => [
-            { "orderedAt" => order_3rd.ordered_at.iso8601 },
-            { "orderedAt" => order_2nd.ordered_at.iso8601 },
-            { "orderedAt" => order_1st.ordered_at.iso8601 },
-          ],
-        }],
+            {"orderedAt" => order_3rd.ordered_at.iso8601},
+            {"orderedAt" => order_2nd.ordered_at.iso8601},
+            {"orderedAt" => order_1st.ordered_at.iso8601}
+          ]
+        }]
       }})
 
-      expect(query(gql, sort: ["+orderedAt"], limit: 2)).to eq({ "data" => {
+      expect(query(gql, sort: ["+orderedAt"], limit: 2)).to eq({"data" => {
         "products" => [{
           "name" => hammer.name,
           "orders" => [
-            { "orderedAt" => order_1st.ordered_at.iso8601 },
-            { "orderedAt" => order_2nd.ordered_at.iso8601 },
-          ],
-        }],
+            {"orderedAt" => order_1st.ordered_at.iso8601},
+            {"orderedAt" => order_2nd.ordered_at.iso8601}
+          ]
+        }]
       }})
     end
   end
@@ -726,7 +726,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
     let!(:alan) { create(:user, email: "alan@mail.com") }
     let!(:john) { create(:user, email: "john@mail.com") }
     let!(:zeek) { create(:user, email: "zeek@mail.com") }
-    let!(:order_1st) { create(:order, user: alan, ordered_at: DateTime.parse('2020-04-01T08:00:00Z')) }
+    let!(:order_1st) { create(:order, user: alan, ordered_at: DateTime.parse("2020-04-01T08:00:00Z")) }
 
     it "gets users with filters, sort and limit" do
       gql = <<-GRAPHQL
@@ -738,38 +738,38 @@ RSpec.describe "GraphqlSchemas", type: :request do
       GRAPHQL
 
       expect(query(gql)["data"]["users"]).to match_array([
-        { "email" => alan.email },
-        { "email" => john.email },
-        { "email" => zeek.email },
+        {"email" => alan.email},
+        {"email" => john.email},
+        {"email" => zeek.email}
       ])
 
-      expect(query(gql, email: "john@mail.com")).to eq({ "data" => {
+      expect(query(gql, email: "john@mail.com")).to eq({"data" => {
         "users" => [
-          { "email" => john.email },
-        ],
+          {"email" => john.email}
+        ]
       }})
 
-      expect(query(gql, sort: ["+email"])).to eq({ "data" => {
+      expect(query(gql, sort: ["+email"])).to eq({"data" => {
         "users" => [
-          { "email" => alan.email },
-          { "email" => john.email },
-          { "email" => zeek.email },
-        ],
+          {"email" => alan.email},
+          {"email" => john.email},
+          {"email" => zeek.email}
+        ]
       }})
 
-      expect(query(gql, sort: ["-email"])).to eq({ "data" => {
+      expect(query(gql, sort: ["-email"])).to eq({"data" => {
         "users" => [
-          { "email" => zeek.email },
-          { "email" => john.email },
-          { "email" => alan.email },
-        ],
+          {"email" => zeek.email},
+          {"email" => john.email},
+          {"email" => alan.email}
+        ]
       }})
 
-      expect(query(gql, sort: ["+email"], limit: 2)).to eq({ "data" => {
+      expect(query(gql, sort: ["+email"], limit: 2)).to eq({"data" => {
         "users" => [
-          { "email" => alan.email },
-          { "email" => john.email },
-        ],
+          {"email" => alan.email},
+          {"email" => john.email}
+        ]
       }})
     end
 
@@ -785,15 +785,15 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }
       GRAPHQL
 
-      expect(query(gql)).to eq({ "data" => {
+      expect(query(gql)).to eq({"data" => {
         "orders" => [
           {
             "orderedAt" => order_1st.ordered_at.iso8601,
             "user" => {
-              "email" => alan.email,
-            },
-          },
-        ],
+              "email" => alan.email
+            }
+          }
+        ]
       }})
     end
   end

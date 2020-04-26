@@ -7,7 +7,7 @@ class Types::UserType < Types::BaseObject
       minOrderedAt: minOrderedAt,
       maxOrderedAt: maxOrderedAt,
       sort: sort,
-      limit: limit,
+      limit: limit
     }
 
     Loaders::HasManyLoader
