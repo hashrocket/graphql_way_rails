@@ -2,28 +2,19 @@ class OrderItem < ApplicationRecord
   belongs_to :product
   belongs_to :order
 
-  scope :page, ->(limit, page) { offset(limit * (page - 1)) if limit && page && page > 1 }
-
   def self.graphql_query(options)
-    if options[:order]
-      order_options = options[:order].except(:sort, :limit, :page)
+    query = OrderItem.all
 
-      return graphql_query(options[:order].slice(:sort, :limit, :page))
-          .joins(:order)
-          .merge(Order.graphql_query(order_options))
+    if options[:order]
+      order_query = Order.graphql_query(options[:order])
+      query = query.joins(:order).merge(order_query)
     end
 
     if options[:product]
-      product_options = options[:product].except(:sort, :limit, :page)
-
-      return graphql_query(options[:product].slice(:sort, :limit, :page))
-          .joins(:product)
-          .merge(Product.graphql_query(product_options))
+      product_query = Product.graphql_query(options[:product])
+      query = query.joins(:product).merge(product_query)
     end
 
-    OrderItem.all
-      .order(options[:sort])
-      .limit(options[:limit])
-      .page(options[:limit], options[:page])
+    query
   end
 end

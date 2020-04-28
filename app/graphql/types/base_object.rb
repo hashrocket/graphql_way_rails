@@ -5,7 +5,7 @@ module Types
     def self.categories_field
       field :categories, [Types::CategoryType], null: false do
         argument :name, String, required: false
-        sort_argument name: "categories.name"
+        sort_argument name: :name
         limit_argument
         page_argument
       end
@@ -18,7 +18,7 @@ module Types
         argument :size, String, required: false
         argument :min_price_cents, Integer, required: false, prepare: ->(value, _ctx) { value && value / 100 }
         argument :max_price_cents, Integer, required: false, prepare: ->(value, _ctx) { value && value / 100 }
-        sort_argument name: "products.name", color: "products.color", size: "products.size", price: "products.price"
+        sort_argument name: :name, color: :color, size: :size, price: :price
         limit_argument
         page_argument
       end
@@ -27,7 +27,7 @@ module Types
     def self.users_field
       field :users, [Types::UserType], null: false do
         argument :email, String, required: false
-        sort_argument email: "users.email"
+        sort_argument email: :email
         limit_argument
         page_argument
       end
@@ -37,7 +37,7 @@ module Types
       field :orders, [Types::OrderType], null: false do
         argument :min_ordered_at, GraphQL::Types::ISO8601DateTime, required: false
         argument :max_ordered_at, GraphQL::Types::ISO8601DateTime, required: false
-        sort_argument orderedAt: "orders.ordered_at"
+        sort_argument orderedAt: :ordered_at
         limit_argument
         page_argument
       end
