@@ -16,8 +16,8 @@ module Types
         argument :name, String, required: false
         argument :color, String, required: false
         argument :size, String, required: false
-        argument :min_price_cents, Integer, required: false, prepare: ->(value, _ctx) { value && value / 100 }
-        argument :max_price_cents, Integer, required: false, prepare: ->(value, _ctx) { value && value / 100 }
+        argument :min_price_cents, Integer, required: false, prepare: ->(value, _ctx) { value && value / 100 }, as: :min_price
+        argument :max_price_cents, Integer, required: false, prepare: ->(value, _ctx) { value && value / 100 }, as: :max_price
         sort_argument name: :name, color: :color, size: :size, price: :price
         limit_argument
         page_argument
