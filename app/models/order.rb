@@ -12,6 +12,6 @@ class Order < ApplicationRecord
     Order.all
       .by_min_ordered_at(options[:min_ordered_at])
       .by_max_ordered_at(options[:max_ordered_at])
-      .paginate(options[:sort], options[:limit], options[:page])
+      .paginate(options[:sort].to_h, options[:limit], options[:page])
   end
 end

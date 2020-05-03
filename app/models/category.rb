@@ -8,6 +8,6 @@ class Category < ApplicationRecord
   def self.graphql_query(options)
     Category.all
       .by_name(options[:name])
-      .paginate(options[:sort], options[:limit], options[:page])
+      .paginate(options[:sort].to_h, options[:limit], options[:page])
   end
 end

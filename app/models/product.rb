@@ -18,6 +18,6 @@ class Product < ApplicationRecord
       .by_size(options[:size])
       .by_min_price(options[:min_price])
       .by_max_price(options[:max_price])
-      .paginate(options[:sort], options[:limit], options[:page])
+      .paginate(options[:sort].to_h, options[:limit], options[:page])
   end
 end
