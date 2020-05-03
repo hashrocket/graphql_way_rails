@@ -13,7 +13,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
 
     it "gets categories with filters, sort and limit" do
       gql = <<-GRAPHQL
-        query($name: String, $sort: [String!], $limit: Int, $page: Int) {
+        query($name: String, $sort: [CategorySort!], $limit: Int, $page: Int) {
           categories(name: $name, sort: $sort, limit: $limit, page: $page) {
             name
           }
@@ -32,7 +32,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["+name"])).to eq({"data" => {
+      expect(query(gql, sort: ["nameAsc"])).to eq({"data" => {
         "categories" => [
           {"name" => books.name},
           {"name" => games.name},
@@ -40,7 +40,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["-name"])).to eq({"data" => {
+      expect(query(gql, sort: ["nameDesc"])).to eq({"data" => {
         "categories" => [
           {"name" => tools.name},
           {"name" => games.name},
@@ -48,14 +48,14 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["+name"], limit: 2)).to eq({"data" => {
+      expect(query(gql, sort: ["nameAsc"], limit: 2)).to eq({"data" => {
         "categories" => [
           {"name" => books.name},
           {"name" => games.name}
         ]
       }})
 
-      expect(query(gql, sort: ["+name"], limit: 2, page: 2)).to eq({"data" => {
+      expect(query(gql, sort: ["nameAsc"], limit: 2, page: 2)).to eq({"data" => {
         "categories" => [
           {"name" => tools.name}
         ]
@@ -103,7 +103,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
 
     it "gets products with filters, sort and limit" do
       gql = <<-GRAPHQL
-        query($name: String, $color: String, $size: String, $min_price_cents: Int, $max_price_cents: Int, $sort: [String!], $limit: Int, $page: Int) {
+        query($name: String, $color: String, $size: String, $min_price_cents: Int, $max_price_cents: Int, $sort: [ProductSort!], $limit: Int, $page: Int) {
           products(name: $name, color: $color, size: $size, minPriceCents: $min_price_cents, maxPriceCents: $max_price_cents, sort: $sort, limit: $limit, page: $page) {
             name
             color
@@ -143,7 +143,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["+name"])).to eq({"data" => {
+      expect(query(gql, sort: ["nameAsc"])).to eq({"data" => {
         "products" => [
           {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
           {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
@@ -151,7 +151,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["-name"])).to eq({"data" => {
+      expect(query(gql, sort: ["nameDesc"])).to eq({"data" => {
         "products" => [
           {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
           {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
@@ -159,7 +159,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["+color"])).to eq({"data" => {
+      expect(query(gql, sort: ["colorAsc"])).to eq({"data" => {
         "products" => [
           {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
           {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
@@ -167,7 +167,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["-color"])).to eq({"data" => {
+      expect(query(gql, sort: ["colorDesc"])).to eq({"data" => {
         "products" => [
           {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
           {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
@@ -175,7 +175,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["+size"])).to eq({"data" => {
+      expect(query(gql, sort: ["sizeAsc"])).to eq({"data" => {
         "products" => [
           {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
           {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
@@ -183,7 +183,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["-size"])).to eq({"data" => {
+      expect(query(gql, sort: ["sizeDesc"])).to eq({"data" => {
         "products" => [
           {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
           {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
@@ -191,7 +191,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["+price"])).to eq({"data" => {
+      expect(query(gql, sort: ["priceAsc"])).to eq({"data" => {
         "products" => [
           {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500},
           {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
@@ -199,7 +199,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["-price"])).to eq({"data" => {
+      expect(query(gql, sort: ["priceDesc"])).to eq({"data" => {
         "products" => [
           {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
           {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000},
@@ -207,14 +207,14 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["+name"], limit: 2)).to eq({"data" => {
+      expect(query(gql, sort: ["nameAsc"], limit: 2)).to eq({"data" => {
         "products" => [
           {"name" => clamps.name, "color" => clamps.color, "size" => clamps.size, "priceCents" => 1500},
           {"name" => hammer.name, "color" => hammer.color, "size" => hammer.size, "priceCents" => 1000}
         ]
       }})
 
-      expect(query(gql, sort: ["+name"], limit: 2, page: 2)).to eq({"data" => {
+      expect(query(gql, sort: ["nameAsc"], limit: 2, page: 2)).to eq({"data" => {
         "products" => [
           {"name" => pliers.name, "color" => pliers.color, "size" => pliers.size, "priceCents" => 500}
         ]
@@ -223,7 +223,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
 
     it "gets categories.products with filters, sort and limit" do
       gql = <<-GRAPHQL
-        query($name: String, $color: String, $size: String, $min_price_cents: Int, $max_price_cents: Int, $sort: [String!], $limit: Int, $page: Int) {
+        query($name: String, $color: String, $size: String, $min_price_cents: Int, $max_price_cents: Int, $sort: [ProductSort!], $limit: Int, $page: Int) {
           categories {
             name
             products(name: $name, color: $color, size: $size, minPriceCents: $min_price_cents, maxPriceCents: $max_price_cents, sort: $sort, limit: $limit, page: $page) {
@@ -283,7 +283,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+name"])).to eq({"data" => {
+      expect(query(gql, sort: ["nameAsc"])).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
@@ -294,7 +294,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["-name"])).to eq({"data" => {
+      expect(query(gql, sort: ["nameDesc"])).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
@@ -305,7 +305,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+color"])).to eq({"data" => {
+      expect(query(gql, sort: ["colorAsc"])).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
@@ -316,7 +316,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["-color"])).to eq({"data" => {
+      expect(query(gql, sort: ["colorDesc"])).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
@@ -327,7 +327,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+size"])).to eq({"data" => {
+      expect(query(gql, sort: ["sizeAsc"])).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
@@ -338,7 +338,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["-size"])).to eq({"data" => {
+      expect(query(gql, sort: ["sizeDesc"])).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
@@ -349,7 +349,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+price"])).to eq({"data" => {
+      expect(query(gql, sort: ["priceAsc"])).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
@@ -360,7 +360,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["-price"])).to eq({"data" => {
+      expect(query(gql, sort: ["priceDesc"])).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
@@ -371,7 +371,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+name"], limit: 2)).to eq({"data" => {
+      expect(query(gql, sort: ["nameAsc"], limit: 2)).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
@@ -381,7 +381,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+name"], limit: 2, page: 2)).to eq({"data" => {
+      expect(query(gql, sort: ["nameAsc"], limit: 2, page: 2)).to eq({"data" => {
         "categories" => [{
           "name" => tools.name,
           "products" => [
@@ -393,7 +393,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
 
     it "gets orders.products with filters, sort and limit" do
       gql = <<-GRAPHQL
-        query($name: String, $color: String, $size: String, $min_price_cents: Int, $max_price_cents: Int, $sort: [String!], $limit: Int, $page: Int) {
+        query($name: String, $color: String, $size: String, $min_price_cents: Int, $max_price_cents: Int, $sort: [ProductSort!], $limit: Int, $page: Int) {
           orders {
             orderedAt
             products(name: $name, color: $color, size: $size, minPriceCents: $min_price_cents, maxPriceCents: $max_price_cents, sort: $sort, limit: $limit, page: $page) {
@@ -453,7 +453,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+name"])).to eq({"data" => {
+      expect(query(gql, sort: ["nameAsc"])).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
@@ -464,7 +464,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["-name"])).to eq({"data" => {
+      expect(query(gql, sort: ["nameDesc"])).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
@@ -475,7 +475,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+color"])).to eq({"data" => {
+      expect(query(gql, sort: ["colorAsc"])).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
@@ -486,7 +486,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["-color"])).to eq({"data" => {
+      expect(query(gql, sort: ["colorDesc"])).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
@@ -497,7 +497,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+size"])).to eq({"data" => {
+      expect(query(gql, sort: ["sizeAsc"])).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
@@ -508,7 +508,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["-size"])).to eq({"data" => {
+      expect(query(gql, sort: ["sizeDesc"])).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
@@ -519,7 +519,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+price"])).to eq({"data" => {
+      expect(query(gql, sort: ["priceAsc"])).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
@@ -530,7 +530,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["-price"])).to eq({"data" => {
+      expect(query(gql, sort: ["priceDesc"])).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
@@ -541,7 +541,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+name"], limit: 2)).to eq({"data" => {
+      expect(query(gql, sort: ["nameAsc"], limit: 2)).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
@@ -551,7 +551,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+name"], limit: 2, page: 2)).to eq({"data" => {
+      expect(query(gql, sort: ["nameAsc"], limit: 2, page: 2)).to eq({"data" => {
         "orders" => [{
           "orderedAt" => order_1st.ordered_at.iso8601,
           "products" => [
@@ -578,7 +578,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
 
     it "gets orders with filters, sort and limit" do
       gql = <<-GRAPHQL
-        query($min_ordered_at: ISO8601DateTime, $max_ordered_at: ISO8601DateTime, $sort: [String!], $limit: Int, $page: Int) {
+        query($min_ordered_at: ISO8601DateTime, $max_ordered_at: ISO8601DateTime, $sort: [OrderSort!], $limit: Int, $page: Int) {
           orders(minOrderedAt: $min_ordered_at, maxOrderedAt: $max_ordered_at, sort: $sort, limit: $limit, page: $page) {
             orderedAt
           }
@@ -597,7 +597,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["+orderedAt"])).to eq({"data" => {
+      expect(query(gql, sort: ["orderedAtAsc"])).to eq({"data" => {
         "orders" => [
           {"orderedAt" => order_1st.ordered_at.iso8601},
           {"orderedAt" => order_2nd.ordered_at.iso8601},
@@ -605,7 +605,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["-orderedAt"])).to eq({"data" => {
+      expect(query(gql, sort: ["orderedAtDesc"])).to eq({"data" => {
         "orders" => [
           {"orderedAt" => order_3rd.ordered_at.iso8601},
           {"orderedAt" => order_2nd.ordered_at.iso8601},
@@ -613,14 +613,14 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["+orderedAt"], limit: 2)).to eq({"data" => {
+      expect(query(gql, sort: ["orderedAtAsc"], limit: 2)).to eq({"data" => {
         "orders" => [
           {"orderedAt" => order_1st.ordered_at.iso8601},
           {"orderedAt" => order_2nd.ordered_at.iso8601}
         ]
       }})
 
-      expect(query(gql, sort: ["+orderedAt"], limit: 2, page: 2)).to eq({"data" => {
+      expect(query(gql, sort: ["orderedAtAsc"], limit: 2, page: 2)).to eq({"data" => {
         "orders" => [
           {"orderedAt" => order_3rd.ordered_at.iso8601}
         ]
@@ -629,7 +629,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
 
     it "gets users.orders with filters, sort and limit" do
       gql = <<-GRAPHQL
-        query($min_ordered_at: ISO8601DateTime, $max_ordered_at: ISO8601DateTime, $sort: [String!], $limit: Int, $page: Int) {
+        query($min_ordered_at: ISO8601DateTime, $max_ordered_at: ISO8601DateTime, $sort: [OrderSort!], $limit: Int, $page: Int) {
           users {
             email
             orders(minOrderedAt: $min_ordered_at, maxOrderedAt: $max_ordered_at, sort: $sort, limit: $limit, page: $page) {
@@ -659,7 +659,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+orderedAt"])).to eq({"data" => {
+      expect(query(gql, sort: ["orderedAtAsc"])).to eq({"data" => {
         "users" => [{
           "email" => alan.email,
           "orders" => [
@@ -670,7 +670,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["-orderedAt"])).to eq({"data" => {
+      expect(query(gql, sort: ["orderedAtDesc"])).to eq({"data" => {
         "users" => [{
           "email" => alan.email,
           "orders" => [
@@ -681,7 +681,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+orderedAt"], limit: 2)).to eq({"data" => {
+      expect(query(gql, sort: ["orderedAtAsc"], limit: 2)).to eq({"data" => {
         "users" => [{
           "email" => alan.email,
           "orders" => [
@@ -691,7 +691,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+orderedAt"], limit: 2, page: 2)).to eq({"data" => {
+      expect(query(gql, sort: ["orderedAtAsc"], limit: 2, page: 2)).to eq({"data" => {
         "users" => [{
           "email" => alan.email,
           "orders" => [
@@ -703,7 +703,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
 
     it "gets products.orders with filters, sort and limit" do
       gql = <<-GRAPHQL
-        query($min_ordered_at: ISO8601DateTime, $max_ordered_at: ISO8601DateTime, $sort: [String!], $limit: Int, $page: Int) {
+        query($min_ordered_at: ISO8601DateTime, $max_ordered_at: ISO8601DateTime, $sort: [OrderSort!], $limit: Int, $page: Int) {
           products {
             name
             orders(minOrderedAt: $min_ordered_at, maxOrderedAt: $max_ordered_at, sort: $sort, limit: $limit, page: $page) {
@@ -733,7 +733,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+orderedAt"])).to eq({"data" => {
+      expect(query(gql, sort: ["orderedAtAsc"])).to eq({"data" => {
         "products" => [{
           "name" => hammer.name,
           "orders" => [
@@ -744,7 +744,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["-orderedAt"])).to eq({"data" => {
+      expect(query(gql, sort: ["orderedAtDesc"])).to eq({"data" => {
         "products" => [{
           "name" => hammer.name,
           "orders" => [
@@ -755,7 +755,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+orderedAt"], limit: 2)).to eq({"data" => {
+      expect(query(gql, sort: ["orderedAtAsc"], limit: 2)).to eq({"data" => {
         "products" => [{
           "name" => hammer.name,
           "orders" => [
@@ -765,7 +765,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         }]
       }})
 
-      expect(query(gql, sort: ["+orderedAt"], limit: 2, page: 2)).to eq({"data" => {
+      expect(query(gql, sort: ["orderedAtAsc"], limit: 2, page: 2)).to eq({"data" => {
         "products" => [{
           "name" => hammer.name,
           "orders" => [
@@ -784,7 +784,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
 
     it "gets users with filters, sort and limit" do
       gql = <<-GRAPHQL
-        query($email: String, $sort: [String!], $limit: Int, $page: Int) {
+        query($email: String, $sort: [UserSort!], $limit: Int, $page: Int) {
           users(email: $email, sort: $sort, limit: $limit, page: $page) {
             email
           }
@@ -803,7 +803,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["+email"])).to eq({"data" => {
+      expect(query(gql, sort: ["emailAsc"])).to eq({"data" => {
         "users" => [
           {"email" => alan.email},
           {"email" => john.email},
@@ -811,7 +811,7 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["-email"])).to eq({"data" => {
+      expect(query(gql, sort: ["emailDesc"])).to eq({"data" => {
         "users" => [
           {"email" => zeek.email},
           {"email" => john.email},
@@ -819,14 +819,14 @@ RSpec.describe "GraphqlSchemas", type: :request do
         ]
       }})
 
-      expect(query(gql, sort: ["+email"], limit: 2)).to eq({"data" => {
+      expect(query(gql, sort: ["emailAsc"], limit: 2)).to eq({"data" => {
         "users" => [
           {"email" => alan.email},
           {"email" => john.email}
         ]
       }})
 
-      expect(query(gql, sort: ["+email"], limit: 2, page: 2)).to eq({"data" => {
+      expect(query(gql, sort: ["emailAsc"], limit: 2, page: 2)).to eq({"data" => {
         "users" => [
           {"email" => zeek.email}
         ]

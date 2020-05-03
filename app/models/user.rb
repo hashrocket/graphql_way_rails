@@ -8,6 +8,6 @@ class User < ApplicationRecord
   def self.graphql_query(options)
     User.all
       .by_email(options[:email])
-      .paginate(options[:sort], options[:limit], options[:page])
+      .paginate(options[:sort].to_h, options[:limit], options[:page])
   end
 end

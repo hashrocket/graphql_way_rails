@@ -27,26 +27,5 @@ module Types
 
       argument(:page, Integer, required: false, default_value: default, prepare: prepare)
     end
-
-    def sort_argument(**fields_map)
-      fields_map = fields_map.map { |k, v| [k.to_s, v] }.to_h
-
-      prepare = ->(values, _ctx) {
-        sort_map = (values || []).map { |value|
-          dir = value[0] == "-" ? :desc : :asc
-          value = value[1..-1] if ["+", "-"].include?(value[0])
-          if fields_map[value]
-            [fields_map[value], dir]
-          else
-            message = "'sort' must be included in [#{fields_map.keys.join(", ")}] prefixed by a plus or minus sign."
-            raise GraphQL::ExecutionError, message
-          end
-        }.to_h
-
-        sort_map.size > 0 ? sort_map : nil
-      }
-
-      argument(:sort, [String], required: false, default_value: [], prepare: prepare)
-    end
   end
 end
