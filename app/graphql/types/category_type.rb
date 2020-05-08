@@ -1,6 +1,6 @@
 class Types::CategoryType < Types::BaseObject
   field :name, String, null: false
-  products_field
+  field_products
 
   def products(**query_options)
     Loaders::HasManyLoader

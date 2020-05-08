@@ -1,7 +1,7 @@
 class Types::OrderType < Types::BaseObject
   field :ordered_at, GraphQL::Types::ISO8601DateTime, null: false
   field :user, Types::UserType, null: false
-  products_field
+  field_products
 
   def user
     Loaders::BelongsToLoader

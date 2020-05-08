@@ -1,6 +1,6 @@
 class Types::UserType < Types::BaseObject
   field :email, String, null: false
-  orders_field
+  field_orders
 
   def orders(**query_options)
     Loaders::HasManyLoader

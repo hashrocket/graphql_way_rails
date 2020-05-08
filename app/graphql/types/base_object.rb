@@ -2,7 +2,7 @@ module Types
   class BaseObject < GraphQL::Schema::Object
     field_class Types::BaseField
 
-    def self.categories_field
+    def self.field_categories
       field :categories, [Types::CategoryType], null: false do
         argument :name, String, required: false
         argument :sort, [Types::Enum::CategorySort], required: false, default_value: []
@@ -11,7 +11,7 @@ module Types
       end
     end
 
-    def self.products_field
+    def self.field_products
       field :products, [Types::ProductType], null: false do
         argument :name, String, required: false
         argument :color, String, required: false
@@ -24,7 +24,7 @@ module Types
       end
     end
 
-    def self.users_field
+    def self.field_users
       field :users, [Types::UserType], null: false do
         argument :email, String, required: false
         argument :sort, [Types::Enum::UserSort], required: false, default_value: []
@@ -33,7 +33,7 @@ module Types
       end
     end
 
-    def self.orders_field
+    def self.field_orders
       field :orders, [Types::OrderType], null: false do
         argument :min_ordered_at, GraphQL::Types::ISO8601DateTime, required: false
         argument :max_ordered_at, GraphQL::Types::ISO8601DateTime, required: false

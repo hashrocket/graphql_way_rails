@@ -1,8 +1,8 @@
 class Types::QueryType < Types::BaseObject
-  categories_field
-  products_field
-  users_field
-  orders_field
+  field_categories
+  field_products
+  field_users
+  field_orders
 
   def categories(**query_options)
     Category.graphql_query(query_options)
