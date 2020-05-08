@@ -19,9 +19,7 @@ class Loaders::HasManyLoader < GraphQL::Batch::Loader
       query = query.where({@column => relation_ids})
     end
 
-    records_by_relation_id = query.group_by { |result|
-      result.public_send(@column)
-    }
+    records_by_relation_id = query.group_by { |result| result.public_send(@column) }
 
     relation_ids.each do |id|
       fulfill(id, records_by_relation_id[id] || [])

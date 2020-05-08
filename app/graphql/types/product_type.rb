@@ -4,7 +4,7 @@ class Types::ProductType < Types::BaseObject
   field :size, String, null: true
   field :price_cents, Integer, null: false
   field :category, Types::CategoryType, null: false
-  orders_field
+  field_orders
 
   def category
     Loaders::BelongsToLoader
