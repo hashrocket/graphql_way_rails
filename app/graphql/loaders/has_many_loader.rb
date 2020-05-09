@@ -8,7 +8,7 @@ class Loaders::HasManyLoader < GraphQL::Batch::Loader
   def perform(relation_ids)
     query = @model.graphql_query(@query_options)
 
-    if query.limit_value
+    if query.limit_value || query.offset_value
       sub_query = query.where("#{@model.table_name}.#{@column} = tmp_relation_ids")
 
       query = @model
