@@ -2,7 +2,7 @@ module Types
   class BaseField < GraphQL::Schema::Field
     argument_class Types::BaseArgument
 
-    def limit_argument(default: 10, min: 1, max: 100)
+    def argument_limit(default: 10, min: 1, max: 100)
       prepare = ->(value, _ctx) {
         if value&.between?(min, max)
           value
@@ -15,7 +15,7 @@ module Types
       argument(:limit, Integer, required: false, default_value: default, prepare: prepare)
     end
 
-    def page_argument(default: 1, min: 1)
+    def argument_page(default: 1, min: 1)
       prepare = ->(value, _ctx) {
         if value && value >= min
           value
